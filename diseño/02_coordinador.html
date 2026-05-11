@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGE CETEC — Coordinador</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+/* ============================================================
+   SIGE CETEC — PALETA INSTITUCIONAL
+   #7FBFFF  Celeste Pared Principal
+   #2970E6  Azul Franja
+   #444444  Negro Marcos de Puerta
+   #D83C3C  Rojo Logo / Extintor
+   #333D7C  Azul Oscuro Logo
+   #A9ADB3  Gris Muro Inferior / Gabinete
+   #FFFFFF  Blanco Techo / Mesas
+   #DDDDDD  Blanco Sucio / Documento
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --celeste:  #7FBFFF;
+  --azul:     #2970E6;
+  --negro:    #444444;
+  --rojo:     #D83C3C;
+  --dark:     #333D7C;
+  --gris:     #A9ADB3;
+  --blanco:   #FFFFFF;
+  --sucio:    #DDDDDD;
+  --bg:       #F5F7FB;
+  --border:   #DDDDDD;
+}
+
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
+.stripe { height: 3px; background: linear-gradient(90deg, var(--rojo), var(--azul), var(--celeste)); flex-shrink: 0; }
+.app { display: flex; flex: 1; min-height: calc(100vh - 3px); }
+
+/* ── SIDEBAR ── */
+.sidebar { width: 230px; background: var(--dark); display: flex; flex-direction: column; flex-shrink: 0; }
+.sb-logo { padding: 18px 16px; border-bottom: 0.5px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
+.sb-icon { width: 38px; height: 38px; background: var(--azul); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; flex-shrink: 0; }
+.sb-name { color: #fff; font-size: 14px; font-weight: 600; }
+.sb-city { color: var(--celeste); font-size: 10px; margin-top: 1px; }
+.role-badge { margin: 12px 14px 4px; background: rgba(255,255,255,0.07); border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; }
+.rb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.rb-name { color: #fff; font-size: 12px; font-weight: 500; flex: 1; }
+.rb-tag { font-size: 9px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+.nav-sec { padding: 12px 0 0; }
+.nav-lbl { font-size: 9px; color: rgba(255,255,255,0.3); padding: 0 16px 5px; letter-spacing: 0.09em; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 12px; color: var(--gris); cursor: pointer; border-left: 2px solid transparent; transition: all 0.12s; }
+.nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.nav-item.active { background: rgba(41,112,230,0.2); color: var(--celeste); border-left-color: var(--azul); font-weight: 600; }
+.nav-item i { font-size: 16px; width: 18px; text-align: center; }
+.nav-item .badge { margin-left: auto; background: var(--rojo); color: #fff; font-size: 9px; padding: 1px 7px; border-radius: 20px; }
+.sb-bottom { margin-top: auto; padding: 14px 16px; border-top: 0.5px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 9px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.sb-user-name { font-size: 12px; color: #fff; font-weight: 500; }
+.sb-user-role { font-size: 10px; color: var(--celeste); }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; background: var(--bg); min-width: 0; }
+.topbar { background: var(--blanco); border-bottom: 0.5px solid var(--border); padding: 13px 24px; display: flex; align-items: center; justify-content: space-between; }
+.tb-title { font-size: 15px; font-weight: 600; color: var(--dark); }
+.tb-sub { font-size: 11px; color: var(--gris); margin-top: 1px; }
+.tb-right { display: flex; align-items: center; gap: 10px; }
+.chip { font-size: 11px; padding: 5px 11px; border-radius: 99px; background: #EBF2FD; color: var(--azul); border: 0.5px solid var(--celeste); display: flex; align-items: center; gap: 5px; }
+.btn-primary { background: var(--azul); color: #fff; border: none; border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.btn-ghost { background: transparent; color: var(--negro); border: 0.5px solid var(--border); border-radius: 8px; padding: 7px 12px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+
+.content { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
+.section-label { font-size: 10px; font-weight: 600; color: var(--gris); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+
+/* KPI */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi { background: var(--blanco); border: 0.5px solid var(--border); border-radius: 9px; padding: 13px 15px; }
+.kpi.az { border-top: 3px solid var(--azul); }
+.kpi.ce { border-top: 3px solid var(--celeste); }
+.kpi.gr { border-top: 3px solid var(--gris); }
+.kpi.ro { border-top: 3px solid var(--rojo); }
+.kpi-lbl { font-size: 10px; color: var(--gris); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+.kpi-val { font-size: 24px; font-weight: 600; color: var(--dark); }
+.kpi-hint { font-size: 10px; color: #B0B8C1; margin-top: 3px; }
+
+/* CARDS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.card { background: var(--blanco); border: 0.5px solid var(--border); border-radius: 10px; padding: 15px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.card-title { font-size: 12px; font-weight: 600; color: var(--dark); display: flex; align-items: center; gap: 6px; }
+.card-title i { font-size: 14px; color: var(--azul); }
+.card-link { font-size: 11px; color: var(--azul); cursor: pointer; }
+
+/* ROWS */
+.row-item { display: flex; align-items: center; gap: 9px; padding: 8px 0; border-bottom: 0.5px solid #F2F4F7; }
+.row-item:last-child { border-bottom: none; }
+.row-av { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; }
+.row-name { font-size: 12px; font-weight: 500; color: var(--dark); }
+.row-sub { font-size: 10px; color: var(--gris); }
+
+/* PILLS */
+.pill { font-size: 9px; padding: 3px 9px; border-radius: 99px; font-weight: 600; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.p-green   { background: #E8F5E9; color: #2E7D32; }
+.p-red     { background: #FDECEA; color: #B71C1C; }
+.p-amber   { background: #FFF8E1; color: #E65100; }
+.p-blue    { background: #EBF2FD; color: #1A4FAA; }
+.p-celeste { background: #E3F2FD; color: #1565C0; }
+.p-gray    { background: #F0F2F5; color: #555; }
+
+/* BAR */
+.bar-wrap { width: 64px; height: 4px; background: #E8EAF0; border-radius: 2px; display: inline-block; vertical-align: middle; margin-right: 5px; }
+.bar-fill { height: 4px; border-radius: 2px; }
+.bf-blue  { background: var(--azul); }
+.bf-green { background: #43A047; }
+.bf-amber { background: #FB8C00; }
+.bf-red   { background: var(--rojo); }
+
+/* HORARIO */
+.horario-grid { display: grid; grid-template-columns: 52px repeat(5, 1fr); gap: 3px; }
+.h-head { font-size: 9px; color: var(--gris); text-align: center; padding: 3px 0; text-transform: uppercase; }
+.h-time { font-size: 9px; color: var(--gris); text-align: right; padding-right: 6px; padding-top: 6px; line-height: 1.4; }
+.h-cell { border-radius: 6px; padding: 5px 7px; min-height: 42px; border: 0.5px solid transparent; }
+.hc-az { background: #EBF2FD; border-color: #B5D4F4; }
+.hc-ro { background: #FDECEA; border-color: #F5BEBE; }
+.hc-dk { background: #ECEDF5; border-color: #C5C8DC; }
+.hc-gr { background: #E8F4E8; border-color: #B8D9B8; }
+.hc-0  { background: #F8F9FC; border-color: #EEEEEE; }
+.h-mat { font-size: 9px; font-weight: 600; color: var(--dark); line-height: 1.3; }
+.h-prf { font-size: 9px; color: var(--gris); }
+
+/* TABLA */
+.tabla-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 11px; table-layout: fixed; }
+th { text-align: left; color: var(--gris); font-weight: 500; padding: 6px 8px; border-bottom: 0.5px solid var(--border); font-size: 10px; text-transform: uppercase; }
+td { padding: 9px 8px; color: var(--negro); border-bottom: 0.5px solid #F2F4F7; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #F8FAFF; }
+</style>
+</head>
+<body>
+
+<div class="stripe"></div>
+<div class="app">
+
+  <!-- ═══════════════════════════════════════════
+       SIDEBAR — COORDINADOR
+       ═══════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-icon"><i class="ti ti-school"></i></div>
+      <div>
+        <div class="sb-name">CETEC</div>
+        <div class="sb-city">Tulancingo · SIGE</div>
+      </div>
+    </div>
+
+    <div class="role-badge">
+      <div class="rb-dot" style="background:var(--dark)"></div>
+      <span class="rb-name">Prof. Hernández</span>
+      <span class="rb-tag" style="background:#ECEDF5;color:var(--dark)">Coordinador</span>
+    </div>
+
+    <div class="nav-sec">
+      <div class="nav-lbl">Académico</div>
+      <div class="nav-item active"><i class="ti ti-layout-dashboard"></i> Inicio</div>
+      <div class="nav-item"><i class="ti ti-users"></i> Alumnos por grupo</div>
+      <div class="nav-item"><i class="ti ti-chart-bar"></i> Calificaciones</div>
+      <div class="nav-item"><i class="ti ti-clipboard-list"></i> Pase de lista <span class="badge">2</span></div>
+      <div class="nav-item"><i class="ti ti-calendar"></i> Horarios</div>
+    </div>
+
+    <div class="nav-sec">
+      <div class="nav-lbl">Seguimiento</div>
+      <div class="nav-item"><i class="ti ti-alert-circle"></i> Alumnos en riesgo</div>
+      <div class="nav-item"><i class="ti ti-id-badge"></i> Maestros</div>
+      <div class="nav-item"><i class="ti ti-bell"></i> Comunicados</div>
+      <div class="nav-item"><i class="ti ti-file-analytics"></i> Reportes académicos</div>
+    </div>
+
+    <div class="sb-bottom">
+      <div class="avatar" style="background:var(--dark);border:1.5px solid rgba(255,255,255,0.2)">RH</div>
+      <div>
+        <div class="sb-user-name">Prof. Hernández</div>
+        <div class="sb-user-role">Coordinador académico</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT — COORDINADOR
+       ═══════════════════════════════════════════ -->
+  <main class="main">
+    <div class="stripe"></div>
+
+    <div class="topbar">
+      <div>
+        <div class="tb-title">Panel de coordinación académica</div>
+        <div class="tb-sub">Prof. Hernández · Lunes 11 de mayo, 2026</div>
+      </div>
+      <div class="tb-right">
+        <button class="btn-ghost"><i class="ti ti-file-analytics"></i> Reporte</button>
+        <div class="chip"><i class="ti ti-clipboard-list" style="font-size:12px"></i> 2 grupos sin lista</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- KPIs -->
+      <div>
+        <div class="section-label">Indicadores académicos</div>
+        <div class="kpi-row">
+          <div class="kpi az">
+            <div class="kpi-lbl"><i class="ti ti-users" style="font-size:13px;color:var(--azul)"></i> Grupos activos</div>
+            <div class="kpi-val">9</div>
+            <div class="kpi-hint">148 alumnos</div>
+          </div>
+          <div class="kpi ro">
+            <div class="kpi-lbl"><i class="ti ti-alert-circle" style="font-size:13px;color:var(--rojo)"></i> En riesgo</div>
+            <div class="kpi-val">12</div>
+            <div class="kpi-hint">Promedio &lt; 6</div>
+          </div>
+          <div class="kpi gr">
+            <div class="kpi-lbl"><i class="ti ti-clipboard-check" style="font-size:13px;color:var(--gris)"></i> Asistencia</div>
+            <div class="kpi-val">87%</div>
+            <div class="kpi-hint">Promedio general</div>
+          </div>
+          <div class="kpi ce">
+            <div class="kpi-lbl"><i class="ti ti-chart-bar" style="font-size:13px;color:var(--celeste)"></i> Promedio general</div>
+            <div class="kpi-val">8.1</div>
+            <div class="kpi-hint">↑ 0.3 vs periodo ant.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calificaciones + Maestros -->
+      <div class="grid-2">
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title"><i class="ti ti-chart-bar"></i> Calificaciones por grupo</div>
+            <span class="card-link">Ver todos →</span>
+          </div>
+          <!-- AQUÍ VAN LAS CALIFICACIONES POR GRUPO -->
+          <div class="row-item">
+            <span style="font-size:11px;font-weight:500;color:var(--dark);width:90px">Cómputo 1°</span>
+            <div class="bar-wrap"><div class="bar-fill bf-green" style="width:88%"></div></div>
+            <span style="font-size:11px;color:var(--dark)">8.8</span>
+            <span class="pill p-green">Bueno</span>
+          </div>
+          <div class="row-item">
+            <span style="font-size:11px;font-weight:500;color:var(--dark);width:90px">Inglés 1°</span>
+            <div class="bar-wrap"><div class="bar-fill bf-green" style="width:91%"></div></div>
+            <span style="font-size:11px;color:var(--dark)">9.1</span>
+            <span class="pill p-green">Excelente</span>
+          </div>
+          <div class="row-item">
+            <span style="font-size:11px;font-weight:500;color:var(--dark);width:90px">Belleza 2°</span>
+            <div class="bar-wrap"><div class="bar-fill bf-amber" style="width:68%"></div></div>
+            <span style="font-size:11px;color:var(--dark)">6.8</span>
+            <span class="pill p-amber">Regular</span>
+          </div>
+          <div class="row-item">
+            <span style="font-size:11px;font-weight:500;color:var(--dark);width:90px">Corte 3°</span>
+            <div class="bar-wrap"><div class="bar-fill bf-red" style="width:56%"></div></div>
+            <span style="font-size:11px;color:var(--dark)">5.6</span>
+            <span class="pill p-red">Riesgo</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title"><i class="ti ti-id-badge"></i> Estado de maestros</div>
+            <span class="card-link">Gestionar →</span>
+          </div>
+          <!-- AQUÍ VAN LOS MAESTROS -->
+          <div class="row-item">
+            <div class="row-av" style="background:#EBF2FD;color:#1A4FAA">MO</div>
+            <div style="flex:1"><div class="row-name">Prof. Mora</div><div class="row-sub">Redes · 3 grupos</div></div>
+            <span class="pill p-green">Al día</span>
+          </div>
+          <div class="row-item">
+            <div class="row-av" style="background:#E8F5E9;color:#2E7D32">SO</div>
+            <div style="flex:1"><div class="row-name">Prof. Soto</div><div class="row-sub">Ofimática · 4 grupos</div></div>
+            <span class="pill p-green">Al día</span>
+          </div>
+          <div class="row-item">
+            <div class="row-av" style="background:#FFF8E1;color:#E65100">VA</div>
+            <div style="flex:1"><div class="row-name">Prof. Valle</div><div class="row-sub">Inglés · 2 grupos</div></div>
+            <span class="pill p-amber">Sin lista</span>
+          </div>
+          <div class="row-item">
+            <div class="row-av" style="background:#FDECEA;color:#B71C1C">RE</div>
+            <div style="flex:1"><div class="row-name">Prof. Reyes</div><div class="row-sub">Patronaje · 2 grupos</div></div>
+            <span class="pill p-red">Incompleto</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Horario semanal -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title"><i class="ti ti-calendar"></i> Horario semanal — Cómputo 2°</div>
+          <span class="card-link">Cambiar grupo →</span>
+        </div>
+        <!-- AQUÍ VA EL HORARIO -->
+        <div class="horario-grid">
+          <div class="h-head"></div>
+          <div class="h-head">Lun</div><div class="h-head">Mar</div>
+          <div class="h-head">Mié</div><div class="h-head">Jue</div><div class="h-head">Vie</div>
+          <div class="h-time">7:00<br>8:00</div>
+          <div class="h-cell hc-az"><div class="h-mat">Redes</div><div class="h-prf">Prof. Mora</div></div>
+          <div class="h-cell hc-dk"><div class="h-mat">Ofimática</div><div class="h-prf">Prof. Soto</div></div>
+          <div class="h-cell hc-ro"><div class="h-mat">Inglés Téc.</div><div class="h-prf">Prof. Valle</div></div>
+          <div class="h-cell hc-az"><div class="h-mat">Redes</div><div class="h-prf">Prof. Mora</div></div>
+          <div class="h-cell hc-gr"><div class="h-mat">Lab.</div><div class="h-prf">Prof. Mora</div></div>
+          <div class="h-time">8:00<br>9:00</div>
+          <div class="h-cell hc-dk"><div class="h-mat">Ofimática</div><div class="h-prf">Prof. Soto</div></div>
+          <div class="h-cell hc-ro"><div class="h-mat">Inglés Téc.</div><div class="h-prf">Prof. Valle</div></div>
+          <div class="h-cell hc-az"><div class="h-mat">Redes</div><div class="h-prf">Prof. Mora</div></div>
+          <div class="h-cell hc-gr"><div class="h-mat">Lab.</div><div class="h-prf">Prof. Mora</div></div>
+          <div class="h-cell hc-dk"><div class="h-mat">Ofimática</div><div class="h-prf">Prof. Soto</div></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

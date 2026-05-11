@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGE CETEC — Gerente de Ventas</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --celeste: #7FBFFF; --azul: #2970E6; --negro: #444444; --rojo: #D83C3C;
+  --dark: #333D7C; --gris: #A9ADB3; --blanco: #FFFFFF; --sucio: #DDDDDD;
+  --bg: #F5F7FB; --border: #DDDDDD; --green: #43A047;
+}
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
+.stripe { height: 3px; background: linear-gradient(90deg, var(--rojo), var(--azul), var(--celeste)); flex-shrink: 0; }
+.app { display: flex; flex: 1; min-height: calc(100vh - 3px); }
+.sidebar { width: 230px; background: var(--dark); display: flex; flex-direction: column; flex-shrink: 0; }
+.sb-logo { padding: 18px 16px; border-bottom: 0.5px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
+.sb-icon { width: 38px; height: 38px; background: var(--azul); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; flex-shrink: 0; }
+.sb-name { color: #fff; font-size: 14px; font-weight: 600; }
+.sb-city { color: var(--celeste); font-size: 10px; margin-top: 1px; }
+.role-badge { margin: 12px 14px 4px; background: rgba(255,255,255,0.07); border-radius: 8px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; }
+.rb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.rb-name { color: #fff; font-size: 12px; font-weight: 500; flex: 1; }
+.rb-tag { font-size: 9px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+.nav-sec { padding: 12px 0 0; }
+.nav-lbl { font-size: 9px; color: rgba(255,255,255,0.3); padding: 0 16px 5px; letter-spacing: 0.09em; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 12px; color: var(--gris); cursor: pointer; border-left: 2px solid transparent; transition: all 0.12s; }
+.nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.nav-item.active { background: rgba(41,112,230,0.2); color: var(--celeste); border-left-color: var(--azul); font-weight: 600; }
+.nav-item i { font-size: 16px; width: 18px; text-align: center; }
+.nav-item .badge { margin-left: auto; background: var(--rojo); color: #fff; font-size: 9px; padding: 1px 7px; border-radius: 20px; }
+.sb-bottom { margin-top: auto; padding: 14px 16px; border-top: 0.5px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 9px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.sb-user-name { font-size: 12px; color: #fff; font-weight: 500; }
+.sb-user-role { font-size: 10px; color: var(--celeste); }
+.main { flex: 1; display: flex; flex-direction: column; background: var(--bg); min-width: 0; }
+.topbar { background: var(--blanco); border-bottom: 0.5px solid var(--border); padding: 13px 24px; display: flex; align-items: center; justify-content: space-between; }
+.tb-title { font-size: 15px; font-weight: 600; color: var(--dark); }
+.tb-sub { font-size: 11px; color: var(--gris); margin-top: 1px; }
+.tb-right { display: flex; align-items: center; gap: 10px; }
+.chip { font-size: 11px; padding: 5px 11px; border-radius: 99px; background: #E8F5E9; color: var(--green); border: 0.5px solid #A5D6A7; display: flex; align-items: center; gap: 5px; }
+.btn-primary { background: var(--azul); color: #fff; border: none; border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.btn-ghost { background: transparent; color: var(--negro); border: 0.5px solid var(--border); border-radius: 8px; padding: 7px 12px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.content { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto; }
+.section-label { font-size: 10px; font-weight: 600; color: var(--gris); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi { background: var(--blanco); border: 0.5px solid var(--border); border-radius: 9px; padding: 13px 15px; }
+.kpi.az { border-top: 3px solid var(--azul); }
+.kpi.ce { border-top: 3px solid var(--celeste); }
+.kpi.gr { border-top: 3px solid var(--gris); }
+.kpi.ro { border-top: 3px solid var(--rojo); }
+.kpi.gn { border-top: 3px solid var(--green); }
+.kpi-lbl { font-size: 10px; color: var(--gris); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+.kpi-val { font-size: 24px; font-weight: 600; color: var(--dark); }
+.kpi-hint { font-size: 10px; color: #B0B8C1; margin-top: 3px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.card { background: var(--blanco); border: 0.5px solid var(--border); border-radius: 10px; padding: 15px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.card-title { font-size: 12px; font-weight: 600; color: var(--dark); display: flex; align-items: center; gap: 6px; }
+.card-title i { font-size: 14px; color: var(--azul); }
+.card-link { font-size: 11px; color: var(--azul); cursor: pointer; }
+.row-item { display: flex; align-items: center; gap: 9px; padding: 8px 0; border-bottom: 0.5px solid #F2F4F7; }
+.row-item:last-child { border-bottom: none; }
+.row-av { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; }
+.row-name { font-size: 12px; font-weight: 500; color: var(--dark); }
+.row-sub { font-size: 10px; color: var(--gris); }
+.pill { font-size: 9px; padding: 3px 9px; border-radius: 99px; font-weight: 600; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
+.p-green { background: #E8F5E9; color: #2E7D32; }
+.p-red   { background: #FDECEA; color: #B71C1C; }
+.p-amber { background: #FFF8E1; color: #E65100; }
+.p-blue  { background: #EBF2FD; color: #1A4FAA; }
+.p-gray  { background: #F0F2F5; color: #555; }
+
+/* PROGRESO */
+.prog-item { margin-bottom: 12px; }
+.prog-item:last-child { margin-bottom: 0; }
+.prog-head { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; }
+.prog-lbl { color: var(--dark); font-weight: 500; }
+.prog-pct { color: var(--gris); }
+.prog-bar { height: 7px; background: #E8EAF0; border-radius: 4px; }
+.prog-fill { height: 7px; border-radius: 4px; }
+.pf-az { background: var(--azul); }
+.pf-ce { background: var(--celeste); }
+.pf-ro { background: var(--rojo); }
+.pf-gn { background: var(--green); }
+
+/* TABLA */
+.tabla-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 11px; table-layout: fixed; }
+th { text-align: left; color: var(--gris); font-weight: 500; padding: 6px 8px; border-bottom: 0.5px solid var(--border); font-size: 10px; text-transform: uppercase; }
+td { padding: 9px 8px; color: var(--negro); border-bottom: 0.5px solid #F2F4F7; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #F8FAFF; }
+
+/* DARK BOX */
+.dark-box { background: var(--dark); border-radius: 10px; padding: 15px; }
+.dark-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 10px; }
+.dark-item { background: rgba(255,255,255,0.08); border-radius: 7px; padding: 10px; }
+.dark-lbl { font-size: 9px; color: var(--celeste); text-transform: uppercase; letter-spacing: 0.05em; }
+.dark-val { font-size: 18px; font-weight: 600; color: #fff; margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<div class="stripe"></div>
+<div class="app">
+
+  <!-- ═══════════════════════════════════════════
+       SIDEBAR — GERENTE DE VENTAS
+       ═══════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-icon"><i class="ti ti-school"></i></div>
+      <div>
+        <div class="sb-name">CETEC</div>
+        <div class="sb-city">Tulancingo · SIGE</div>
+      </div>
+    </div>
+
+    <div class="role-badge">
+      <div class="rb-dot" style="background:#43A047"></div>
+      <span class="rb-name">Lic. Morales</span>
+      <span class="rb-tag" style="background:#E8F5E9;color:#2E7D32">Gerente ventas</span>
+    </div>
+
+    <div class="nav-sec">
+      <div class="nav-lbl">Ventas</div>
+      <div class="nav-item active"><i class="ti ti-layout-dashboard"></i> Inicio</div>
+      <div class="nav-item"><i class="ti ti-cash"></i> Cobros del día</div>
+      <div class="nav-item"><i class="ti ti-users"></i> Nuevas inscripciones</div>
+      <div class="nav-item"><i class="ti ti-trending-up"></i> Métricas de ventas</div>
+    </div>
+
+    <div class="nav-sec">
+      <div class="nav-lbl">Gestión</div>
+      <div class="nav-item"><i class="ti ti-alert-circle"></i> Adeudos pendientes <span class="badge">18</span></div>
+      <div class="nav-item"><i class="ti ti-discount"></i> Descuentos y becas</div>
+      <div class="nav-item"><i class="ti ti-file-invoice"></i> Recibos y facturas</div>
+      <div class="nav-item"><i class="ti ti-bell"></i> Recordatorios</div>
+    </div>
+
+    <div class="sb-bottom">
+      <div class="avatar" style="background:#43A047">AM</div>
+      <div>
+        <div class="sb-user-name">Lic. Morales</div>
+        <div class="sb-user-role">Gerente de ventas</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT — GERENTE DE VENTAS
+       ═══════════════════════════════════════════ -->
+  <main class="main">
+    <div class="stripe"></div>
+
+    <div class="topbar">
+      <div>
+        <div class="tb-title">Panel de ventas e inscripciones</div>
+        <div class="tb-sub">Lic. Morales · Lunes 11 de mayo, 2026</div>
+      </div>
+      <div class="tb-right">
+        <button class="btn-ghost"><i class="ti ti-file-invoice"></i> Generar recibo</button>
+        <button class="btn-primary"><i class="ti ti-user-plus"></i> Nueva inscripción</button>
+        <div class="chip"><i class="ti ti-trending-up" style="font-size:12px"></i> $8,200 cobrado hoy</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- KPIs -->
+      <div>
+        <div class="section-label">Resumen financiero</div>
+        <div class="kpi-row">
+          <div class="kpi az">
+            <div class="kpi-lbl"><i class="ti ti-cash" style="font-size:13px;color:var(--azul)"></i> Ingresos del mes</div>
+            <div class="kpi-val">$24,500</div>
+            <div class="kpi-hint">Meta: $30,000</div>
+          </div>
+          <div class="kpi gn">
+            <div class="kpi-lbl"><i class="ti ti-users" style="font-size:13px;color:var(--green)"></i> Inscripciones</div>
+            <div class="kpi-val">148</div>
+            <div class="kpi-hint">+3 esta semana</div>
+          </div>
+          <div class="kpi ro">
+            <div class="kpi-lbl"><i class="ti ti-alert-circle" style="font-size:13px;color:var(--rojo)"></i> Adeudos</div>
+            <div class="kpi-val">18</div>
+            <div class="kpi-hint">$21,600 pendientes</div>
+          </div>
+          <div class="kpi ce">
+            <div class="kpi-lbl"><i class="ti ti-trending-up" style="font-size:13px;color:var(--celeste)"></i> Tasa de cobro</div>
+            <div class="kpi-val">82%</div>
+            <div class="kpi-hint">↑ 5% vs mes ant.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagos + Metas -->
+      <div class="grid-2">
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title"><i class="ti ti-cash"></i> Pagos recientes</div>
+            <span class="card-link">Ver todos →</span>
+          </div>
+          <!-- AQUÍ VAN LOS PAGOS -->
+          <div class="row-item">
+            <div class="row-av" style="background:#E8F5E9;color:#2E7D32">MA</div>
+            <div style="flex:1"><div class="row-name">María Alvarado</div><div class="row-sub">Inglés · Mensualidad mayo</div></div>
+            <span class="pill p-green">$1,200</span>
+          </div>
+          <div class="row-item">
+            <div class="row-av" style="background:#E8F5E9;color:#2E7D32">CR</div>
+            <div style="flex:1"><div class="row-name">Carlos Ruiz</div><div class="row-sub">Corte · Mensualidad mayo</div></div>
+            <span class="pill p-green">$1,200</span>
+          </div>
+          <div class="row-item">
+            <div class="row-av" style="background:#FDECEA;color:#B71C1C">JR</div>
+            <div style="flex:1"><div class="row-name">Jorge Ramírez</div><div class="row-sub">Cómputo · Pendiente</div></div>
+            <span class="pill p-red">$1,200</span>
+          </div>
+          <div class="row-item">
+            <div class="row-av" style="background:#FFF8E1;color:#E65100">LP</div>
+            <div style="flex:1"><div class="row-name">Laura Pérez</div><div class="row-sub">Belleza · Descuento 50%</div></div>
+            <span class="pill p-amber">$600</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title"><i class="ti ti-trending-up"></i> Metas del mes</div>
+            <span class="card-link">Ver reporte →</span>
+          </div>
+          <!-- AQUÍ VAN LAS METAS -->
+          <div class="prog-item">
+            <div class="prog-head"><span class="prog-lbl">Ingresos</span><span class="prog-pct">82%</span></div>
+            <div class="prog-bar"><div class="prog-fill pf-az" style="width:82%"></div></div>
+          </div>
+          <div class="prog-item">
+            <div class="prog-head"><span class="prog-lbl">Inscripciones nuevas</span><span class="prog-pct">60%</span></div>
+            <div class="prog-bar"><div class="prog-fill pf-ce" style="width:60%"></div></div>
+          </div>
+          <div class="prog-item">
+            <div class="prog-head"><span class="prog-lbl">Recuperación adeudos</span><span class="prog-pct">35%</span></div>
+            <div class="prog-bar"><div class="prog-fill pf-ro" style="width:35%"></div></div>
+          </div>
+          <div class="prog-item">
+            <div class="prog-head"><span class="prog-lbl">Renovaciones</span><span class="prog-pct">90%</span></div>
+            <div class="prog-bar"><div class="prog-fill pf-gn" style="width:90%"></div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tabla de adeudos -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title"><i class="ti ti-alert-circle"></i> Adeudos pendientes</div>
+          <span class="card-link">Exportar →</span>
+        </div>
+        <!-- AQUÍ VA LA TABLA DE ADEUDOS -->
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:140px">Alumno</th>
+                <th>Carrera</th>
+                <th style="width:90px">Monto</th>
+                <th style="width:100px">Vencimiento</th>
+                <th style="width:80px">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:500;color:var(--dark)">Jorge Ramírez</td>
+                <td>Cómputo</td><td>$1,200</td><td>15 mayo</td>
+                <td><span class="pill p-red" style="margin-left:0">Pendiente</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:500;color:var(--dark)">Sofía González</td>
+                <td>Inglés</td><td>$1,200</td><td>15 mayo</td>
+                <td><span class="pill p-red" style="margin-left:0">Pendiente</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:500;color:var(--dark)">Ana Morales</td>
+                <td>Cómputo</td><td>$600</td><td>20 mayo</td>
+                <td><span class="pill p-amber" style="margin-left:0">Parcial</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+</body>
+</html>
