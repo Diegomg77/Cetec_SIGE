@@ -1,0 +1,316 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --azul:#2970E6;--celeste:#7FBFFF;--rojo:#D83C3C;
+  --dark:#333D7C;--gris:#A9ADB3;--blanco:#FFFFFF;--border:#DDDDDD;
+  --hover:#2970E6;
+}
+.scene{background:#EEF2F8;border-radius:14px;border:.5px solid var(--border);overflow:hidden;position:relative;min-height:720px;display:flex;flex-direction:column;font-family:'Segoe UI',system-ui,sans-serif}
+.topbar{position:relative;z-index:10;background:var(--dark);padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.stripe-top{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rojo),var(--azul),var(--celeste))}
+.tb-logo{display:flex;align-items:center;gap:10px}
+.tb-icon{width:32px;height:32px;background:var(--azul);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.tb-name{color:#fff;font-size:15px;font-weight:700;letter-spacing:1px}
+.tb-sub{color:var(--celeste);font-size:10px;margin-top:1px}
+.tb-right{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+
+.net-svg{position:absolute;inset:52px 0 0 0;width:100%;height:calc(100% - 52px)}
+
+.content{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;padding:28px 20px 24px}
+
+.hero-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gris);margin-bottom:0}
+
+.diamond-wrap{position:relative;width:480px;height:430px;flex-shrink:0;margin-top:16px}
+.lines-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+.rnode{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:2;transform:translate(-50%,-50%)}
+.rnode-ring{
+  width:118px;height:118px;border-radius:50%;
+  border:2.5px solid var(--dark);
+  background:var(--blanco);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1), border-color .28s;
+}
+.rnode-ring::before{
+  content:'';position:absolute;
+  bottom:-100%;left:0;right:0;height:100%;
+  background:var(--hover);
+  transition:bottom .36s cubic-bezier(.4,0,.2,1);
+  z-index:0;
+}
+.rnode-ring i{font-size:48px;color:var(--dark);position:relative;z-index:1;transition:transform .34s cubic-bezier(.34,1.56,.64,1), color .28s}
+.rnode-label{margin-top:11px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--dark);text-align:center;line-height:1.3;transition:color .28s}
+
+.rnode:hover .rnode-ring{border-color:var(--hover);transform:scale(1.1)}
+.rnode:hover .rnode-ring::before{bottom:0}
+.rnode:hover .rnode-ring i{transform:translateY(-5px) scale(1.12);color:#fff}
+.rnode:hover .rnode-label{color:var(--hover)}
+.rnode:active .rnode-ring{transform:scale(.96)}
+
+.rnode-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.center-ring{width:80px;height:80px;border-radius:50%;background:var(--dark);display:flex;align-items:center;justify-content:center;border:2.5px solid rgba(127,191,255,.45);box-shadow:0 0 0 6px rgba(51,61,124,.12)}
+.center-ring i{font-size:32px;color:var(--celeste)}
+.center-label{margin-top:7px;font-size:9px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--dark);text-align:center}
+
+/* LOGIN */
+.login-screen{display:none;position:absolute;inset:0;z-index:20;flex-direction:column}
+.login-screen.show{display:flex}
+.ls-stripe{height:3px;background:linear-gradient(90deg,var(--rojo),var(--azul),var(--celeste));flex-shrink:0}
+.ls-inner{display:grid;grid-template-columns:1fr 390px;flex:1;min-height:0}
+
+/* PANEL IZQ */
+.ll{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#4A5BAE 0%,#333D7C 55%,#1E2650 100%);
+}
+.ll::before{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(41,112,230,.18);top:-90px;right:-90px}
+.ll::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(127,191,255,.08);bottom:-50px;left:-50px}
+
+/* BOTÓN REGRESAR — visible y grande */
+.back-fab{
+  position:absolute;top:18px;left:18px;
+  display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:8px;
+  padding:7px 13px;
+  font-size:12px;font-weight:600;
+  color:#fff;cursor:pointer;
+  font-family:inherit;
+  transition:background .15s,transform .12s;
+  z-index:5;
+}
+.back-fab:hover{background:rgba(255,255,255,.22);transform:translateX(-2px)}
+.back-fab:active{transform:scale(.97)}
+.back-fab i{font-size:15px}
+
+.ll-icon{width:108px;height:108px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:50px;color:#fff;margin-bottom:20px;position:relative;z-index:1;border:2.5px solid rgba(127,191,255,.35);background:rgba(41,112,230,.22)}
+.ll-name{font-size:28px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;position:relative;z-index:1}
+.ll-tag{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:5px 16px;border-radius:20px;position:relative;z-index:1;background:rgba(255,255,255,.14);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2)}
+.ll-foot{position:absolute;bottom:20px;display:flex;align-items:center;gap:8px;z-index:1}
+.ll-fi{width:26px;height:26px;background:rgba(255,255,255,.12);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+.ll-fn{color:rgba(255,255,255,.4);font-size:11px;font-weight:600}
+
+/* PANEL DER */
+.lr{background:var(--blanco);display:flex;flex-direction:column;justify-content:center;padding:36px 34px;position:relative;border-left:.5px solid var(--border)}
+.lr-title{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:3px}
+.lr-sub{font-size:12px;color:var(--gris);margin-bottom:26px}
+.fg{margin-bottom:15px}
+.fl{font-size:10px;font-weight:700;color:#444;display:block;margin-bottom:5px;letter-spacing:.05em;text-transform:uppercase}
+.iw{position:relative}
+.ii{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--gris);pointer-events:none}
+.fi{width:100%;padding:10px 11px 10px 36px;border:.5px solid var(--border);border-radius:8px;font-size:13px;color:#333;outline:none;font-family:inherit;transition:border-color .15s}
+.fi:focus{border-color:var(--hover);box-shadow:0 0 0 3px rgba(41,112,230,.1)}
+.fi::placeholder{color:#C5C9D0}
+.eye-b{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:15px;color:var(--gris);cursor:pointer;padding:2px}
+.pw-h{display:flex;justify-content:flex-end;margin-top:4px}
+.pw-a{font-size:11px;color:var(--hover);cursor:pointer}
+.sbtn{width:100%;padding:11px;border:none;border-radius:8px;background:var(--hover);font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:18px;transition:filter .15s,transform .1s}
+.sbtn:hover{filter:brightness(1.12)}
+.sbtn:active{transform:scale(.98)}
+.lfoot{margin-top:18px;text-align:center;font-size:11px;color:var(--gris)}
+.lfoot a{color:var(--hover);cursor:pointer}
+.ver{position:absolute;bottom:14px;right:14px;font-size:10px;color:var(--gris);background:#F5F7FB;border:.5px solid var(--border);padding:2px 8px;border-radius:20px}
+</style>
+
+<h2 class="sr-only">Selector de cargo y login SIGE CETEC</h2>
+
+<div class="scene">
+
+  <div class="topbar">
+    <div class="stripe-top"></div>
+    <div class="tb-logo">
+      <div class="tb-icon"><i class="ti ti-school" aria-hidden="true"></i></div>
+      <div>
+        <div class="tb-name">CETEC</div>
+        <div class="tb-sub">Tulancingo · SIGE</div>
+      </div>
+    </div>
+    <div class="tb-right">Sistema de Gestión Escolar · 2026</div>
+  </div>
+
+  <svg class="net-svg" id="netSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <!-- SELECTOR -->
+  <div class="content" id="selectorContent">
+    <div class="hero-label">Bienvenido al sistema</div>
+
+    <div class="diamond-wrap">
+      <svg class="lines-svg" viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg">
+        <line x1="240" y1="90"  x2="240" y2="185" stroke="#C8D0DE" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <line x1="95"  y1="210" x2="185" y2="210" stroke="#C8D0DE" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <line x1="295" y1="210" x2="385" y2="210" stroke="#C8D0DE" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <line x1="240" y1="295" x2="240" y2="335" stroke="#C8D0DE" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <line x1="185" y1="95"  x2="100" y2="165" stroke="#C8D0DE" stroke-width=".8" opacity=".5"/>
+        <line x1="295" y1="95"  x2="380" y2="165" stroke="#C8D0DE" stroke-width=".8" opacity=".5"/>
+        <line x1="185" y1="325" x2="100" y2="255" stroke="#C8D0DE" stroke-width=".8" opacity=".5"/>
+        <line x1="295" y1="325" x2="380" y2="255" stroke="#C8D0DE" stroke-width=".8" opacity=".5"/>
+      </svg>
+
+      <div class="rnode" style="left:50%;top:20%" onclick="goLogin('director','Director','ti-crown')" tabindex="0" role="button" aria-label="Director">
+        <div class="rnode-ring"><i class="ti ti-crown" aria-hidden="true"></i></div>
+        <div class="rnode-label">Director</div>
+      </div>
+
+      <div class="rnode" style="left:20%;top:50%" onclick="goLogin('coordinador','Coordinador','ti-sitemap')" tabindex="0" role="button" aria-label="Coordinador">
+        <div class="rnode-ring"><i class="ti ti-sitemap" aria-hidden="true"></i></div>
+        <div class="rnode-label">Coordinador</div>
+      </div>
+
+      <div class="rnode" style="left:80%;top:50%" onclick="goLogin('gerente','Gerente de ventas','ti-trending-up')" tabindex="0" role="button" aria-label="Gerente de ventas">
+        <div class="rnode-ring"><i class="ti ti-trending-up" aria-hidden="true"></i></div>
+        <div class="rnode-label">Gerente de<br>ventas</div>
+      </div>
+
+      <div class="rnode" style="left:50%;top:82%" onclick="goLogin('secretaria','Secretaria','ti-calendar-event')" tabindex="0" role="button" aria-label="Secretaria">
+        <div class="rnode-ring"><i class="ti ti-calendar-event" aria-hidden="true"></i></div>
+        <div class="rnode-label">Secretaria</div>
+      </div>
+
+      <div class="rnode-center">
+        <div class="center-ring"><i class="ti ti-school" aria-hidden="true"></i></div>
+        <div class="center-label">CETEC</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="ls-stripe"></div>
+    <div class="ls-inner">
+
+      <div class="ll">
+        <!-- BOTÓN REGRESAR GRANDE Y CLARO -->
+        <button class="back-fab" onclick="goBack()" aria-label="Regresar a selección de cargo">
+          <i class="ti ti-arrow-left" aria-hidden="true"></i> Cambiar cargo
+        </button>
+
+        <div class="ll-icon"><i id="llIco" class="ti ti-crown" aria-hidden="true"></i></div>
+        <div class="ll-name" id="llName">Director</div>
+        <div class="ll-tag" id="llTag">Cargo seleccionado</div>
+
+        <div class="ll-foot">
+          <div class="ll-fi"><i class="ti ti-school" aria-hidden="true"></i></div>
+          <span class="ll-fn">CETEC · SIGE</span>
+        </div>
+      </div>
+
+      <div class="lr">
+        <div class="lr-title">Iniciar sesión</div>
+        <div class="lr-sub" id="lrSub">Acceso como Director</div>
+
+        <div class="fg">
+          <label class="fl" for="userIn">Usuario / No. de empleado</label>
+          <div class="iw">
+            <i class="ti ti-user ii" aria-hidden="true"></i>
+            <input class="fi" type="text" id="userIn" placeholder="Ej. 00012 o g.sanchez" autocomplete="username">
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl" for="passIn">Contraseña</label>
+          <div class="iw">
+            <i class="ti ti-lock ii" aria-hidden="true"></i>
+            <input class="fi" type="password" id="passIn" placeholder="••••••••" style="padding-right:36px" autocomplete="current-password">
+            <button class="eye-b" type="button" onclick="togglePw()" aria-label="Mostrar contraseña">
+              <i class="ti ti-eye" id="eyeIco" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="pw-h"><a class="pw-a">¿Olvidaste tu contraseña?</a></div>
+        </div>
+
+        <button class="sbtn" id="sbtn" onclick="doLogin()">
+          <i class="ti ti-login" aria-hidden="true"></i> Entrar al sistema
+        </button>
+
+        <div class="lfoot">CETEC Tulancingo &nbsp;·&nbsp; <a>Soporte</a> &nbsp;·&nbsp; <a>Privacidad</a></div>
+        <div class="ver">v1.0.0 · 2026</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+var curRol = null;
+
+function buildNet(){
+  var svg=document.getElementById('netSvg');
+  var W=660,H=668,pts=[],out='';
+  for(var i=0;i<44;i++) pts.push({x:Math.random()*W,y:Math.random()*H});
+  var cols=['#2970E6','#7FBFFF','#D83C3C','#A9ADB3','#333D7C'];
+  for(var i=0;i<pts.length;i++){
+    for(var j=i+1;j<pts.length;j++){
+      var dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y;
+      if(Math.sqrt(dx*dx+dy*dy)<155)
+        out+='<line x1="'+pts[i].x+'" y1="'+pts[i].y+'" x2="'+pts[j].x+'" y2="'+pts[j].y+'" stroke="#C5CDD8" stroke-width="0.7" opacity="0.6"/>';
+    }
+  }
+  for(var i=0;i<pts.length;i++){
+    var c=cols[Math.floor(Math.random()*cols.length)],r=2.5+Math.random()*3;
+    out+='<circle cx="'+pts[i].x+'" cy="'+pts[i].y+'" r="'+r+'" fill="'+c+'" opacity="0.5"/>';
+  }
+  svg.innerHTML=out;
+}
+buildNet();
+
+var labelMap={
+  director:'Director · Control total del sistema',
+  coordinador:'Coordinador · Gestión académica',
+  gerente:'Gerente de ventas · Control financiero',
+  secretaria:'Secretaria · Trámites y atención'
+};
+
+function goLogin(rol,name,icon){
+  curRol=rol;
+  document.getElementById('llIco').className='ti '+icon;
+  document.getElementById('llName').textContent=name;
+  document.getElementById('llTag').textContent=labelMap[rol]||name;
+  document.getElementById('lrSub').textContent='Acceso como '+name;
+  document.getElementById('userIn').value='';
+  document.getElementById('passIn').value='';
+  document.getElementById('userIn').style.borderColor='';
+  document.getElementById('passIn').style.borderColor='';
+  var b=document.getElementById('sbtn');
+  b.innerHTML='<i class="ti ti-login" aria-hidden="true"></i> Entrar al sistema';
+  b.style.background='';
+  document.getElementById('loginScreen').classList.add('show');
+}
+
+function goBack(){
+  document.getElementById('loginScreen').classList.remove('show');
+  curRol=null;
+}
+
+function togglePw(){
+  var i=document.getElementById('passIn'),ic=document.getElementById('eyeIco');
+  i.type=i.type==='password'?'text':'password';
+  ic.className=i.type==='password'?'ti ti-eye':'ti ti-eye-off';
+}
+
+function doLogin(){
+  var usr=document.getElementById('userIn').value.trim();
+  var pw=document.getElementById('passIn').value.trim();
+  document.getElementById('userIn').style.borderColor=!usr?'#D83C3C':'';
+  document.getElementById('passIn').style.borderColor=!pw?'#D83C3C':'';
+  if(!usr||!pw) return;
+  var b=document.getElementById('sbtn');
+  b.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Verificando...';
+  b.style.background='#43A047';
+  setTimeout(function(){
+    b.innerHTML='<i class="ti ti-login" aria-hidden="true"></i> Entrar al sistema';
+    b.style.background='';
+    document.getElementById('userIn').style.borderColor='';
+    document.getElementById('passIn').style.borderColor='';
+  },1500);
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&curRol) doLogin();
+  if(e.key==='Escape') goBack();
+});
+</script>
